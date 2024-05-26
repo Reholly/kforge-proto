@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package tag;
+import "google/protobuf/empty.proto";
+
+option go_package="/api";
+
+message Tag {
+  int64 id = 1;
+  string title = 2;
+}
+
+message GetAllTagsByIdsRequest {
+  repeated int64 ids = 1;
+}
+
+message CreateTagRequest{
+  string title = 1;
+}
+
+message IdRequest {
+  int64 id = 1;
+}
+
+message GetTagsResponse {
+  repeated Tag tags = 1;
+}
+
+service TagService {
+  rpc GetAllTagsByIds(GetAllTagsByIdsRequest) returns(GetTagsResponse);
+  rpc GetAllTags(google.protobuf.Empty) returns(GetTagsResponse);
+  rpc GetTagById(IdRequest) returns(Tag);
+  rpc DeleteTagById(IdRequest) returns(google.protobuf.Empty);
+  rpc CreateTag(CreateTagRequest) returns(google.protobuf.Empty);
+}
