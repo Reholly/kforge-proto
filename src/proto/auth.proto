@@ -15,6 +15,6 @@ message ValidateTokenResponse {
   bool isValid = 5;
 }
 
-service TagService {
-  rpc GetAllTagsByIds(ValidateTokenRequest) returns(ValidateTokenResponse);
+service AuthService {
+  rpc ValidateToken(ValidateTokenRequest) returns(ValidateTokenResponse);
 }
