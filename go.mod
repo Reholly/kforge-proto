@@ -1,4 +1,4 @@
-module kforge-proto
+module github.com/Reholly/kforge-proto
 
 go 1.22.0
 
