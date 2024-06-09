@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: code-runner.proto
 
-package api
+package codeRunner
 
 import (
 	context "context"
