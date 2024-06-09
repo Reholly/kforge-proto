@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package codeRunner;
+option go_package = "/api";
+
+service CodeRunner {
+  rpc RunTestsOnCode(RunTestsOnCodeRequest) returns (RunTestsOnCodeResponse);
+}
+
+message Test {
+  string input = 1;
+  string output = 2;
+  int32 points = 3;
+}
+
+message RunTestsOnCodeRequest {
+  string code = 1;
+  string language = 2;
+  int32 memoryLimitKb = 3;
+  int32 timeLimitMs = 4;
+  repeated Test tests = 5;
+}
+
+message RunTestsOnCodeResponse {
+  string resultCode = 1;
+  int32 points = 2;
+  string description = 3;
+}
