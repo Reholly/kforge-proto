@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: src/proto/auth.proto
+// source: auth.proto
 
-package auth
+package api
 
 import (
 	context "context"
@@ -23,6 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
 	ValidateToken(ctx context.Context, in *ValidateTokenRequest, opts ...grpc.CallOption) (*ValidateTokenResponse, error)
+	GetEmailByUsernameOrEmail(ctx context.Context, in *GetAccountEmailByUsernameOrEmailRequest, opts ...grpc.CallOption) (*GetAccountByUsernameOrEmailResponse, error)
+	GetAccountInfos(ctx context.Context, in *GetAccountsInfoRequest, opts ...grpc.CallOption) (*GetAccountsInfoResponse, error)
 }
 
 type authServiceClient struct {
@@ -42,11 +44,31 @@ func (c *authServiceClient) ValidateToken(ctx context.Context, in *ValidateToken
 	return out, nil
 }
 
+func (c *authServiceClient) GetEmailByUsernameOrEmail(ctx context.Context, in *GetAccountEmailByUsernameOrEmailRequest, opts ...grpc.CallOption) (*GetAccountByUsernameOrEmailResponse, error) {
+	out := new(GetAccountByUsernameOrEmailResponse)
+	err := c.cc.Invoke(ctx, "/auth.AuthService/GetEmailByUsernameOrEmail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) GetAccountInfos(ctx context.Context, in *GetAccountsInfoRequest, opts ...grpc.CallOption) (*GetAccountsInfoResponse, error) {
+	out := new(GetAccountsInfoResponse)
+	err := c.cc.Invoke(ctx, "/auth.AuthService/GetAccountInfos", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
 type AuthServiceServer interface {
 	ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error)
+	GetEmailByUsernameOrEmail(context.Context, *GetAccountEmailByUsernameOrEmailRequest) (*GetAccountByUsernameOrEmailResponse, error)
+	GetAccountInfos(context.Context, *GetAccountsInfoRequest) (*GetAccountsInfoResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -56,6 +78,12 @@ type UnimplementedAuthServiceServer struct {
 
 func (UnimplementedAuthServiceServer) ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidateToken not implemented")
+}
+func (UnimplementedAuthServiceServer) GetEmailByUsernameOrEmail(context.Context, *GetAccountEmailByUsernameOrEmailRequest) (*GetAccountByUsernameOrEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEmailByUsernameOrEmail not implemented")
+}
+func (UnimplementedAuthServiceServer) GetAccountInfos(context.Context, *GetAccountsInfoRequest) (*GetAccountsInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAccountInfos not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -88,6 +116,42 @@ func _AuthService_ValidateToken_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_GetEmailByUsernameOrEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAccountEmailByUsernameOrEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetEmailByUsernameOrEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.AuthService/GetEmailByUsernameOrEmail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetEmailByUsernameOrEmail(ctx, req.(*GetAccountEmailByUsernameOrEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_GetAccountInfos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAccountsInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetAccountInfos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.AuthService/GetAccountInfos",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetAccountInfos(ctx, req.(*GetAccountsInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -99,7 +163,15 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "ValidateToken",
 			Handler:    _AuthService_ValidateToken_Handler,
 		},
+		{
+			MethodName: "GetEmailByUsernameOrEmail",
+			Handler:    _AuthService_GetEmailByUsernameOrEmail_Handler,
+		},
+		{
+			MethodName: "GetAccountInfos",
+			Handler:    _AuthService_GetAccountInfos_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "src/proto/auth.proto",
+	Metadata: "auth.proto",
 }

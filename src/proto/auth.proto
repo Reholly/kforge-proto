@@ -15,6 +15,32 @@ message ValidateTokenResponse {
   bool isValid = 5;
 }
 
+message GetAccountEmailByUsernameOrEmailRequest {
+  string usernameOrEmail = 1;
+}
+
+message GetAccountByUsernameOrEmailResponse {
+  string email = 1;
+  string error = 2;
+}
+
+message GetAccountsInfoRequest {
+  repeated string usernames = 1;
+}
+
+message GetAccountsInfoResponse {
+  repeated Info accounts = 1;
+}
+
+message Info {
+  string username = 1;
+  string name = 2;
+  string lastname = 3;
+  string patronymic = 4;
+}
+
 service AuthService {
   rpc ValidateToken(ValidateTokenRequest) returns(ValidateTokenResponse);
+  rpc GetEmailByUsernameOrEmail(GetAccountEmailByUsernameOrEmailRequest) returns(GetAccountByUsernameOrEmailResponse);
+  rpc GetAccountInfos(GetAccountsInfoRequest) returns(GetAccountsInfoResponse);
 }
