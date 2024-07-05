@@ -43,5 +43,5 @@ message Info {
 service AuthService {
   rpc ValidateToken(ValidateTokenRequest) returns(ValidateTokenResponse);
   rpc GetEmailByUsernameOrEmail(GetAccountEmailByUsernameOrEmailRequest) returns(GetAccountByUsernameOrEmailResponse);
-  rpc GetAccountInfos(GetAccountsInfoRequest) returns(GetAccountsInfoResponse);
+  rpc GetAccountsInfo(GetAccountsInfoRequest) returns(GetAccountsInfoResponse);
 }

@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type AuthServiceClient interface {
 	ValidateToken(ctx context.Context, in *ValidateTokenRequest, opts ...grpc.CallOption) (*ValidateTokenResponse, error)
 	GetEmailByUsernameOrEmail(ctx context.Context, in *GetAccountEmailByUsernameOrEmailRequest, opts ...grpc.CallOption) (*GetAccountByUsernameOrEmailResponse, error)
-	GetAccountInfos(ctx context.Context, in *GetAccountsInfoRequest, opts ...grpc.CallOption) (*GetAccountsInfoResponse, error)
+	GetAccountsInfo(ctx context.Context, in *GetAccountsInfoRequest, opts ...grpc.CallOption) (*GetAccountsInfoResponse, error)
 }
 
 type authServiceClient struct {
@@ -53,9 +53,9 @@ func (c *authServiceClient) GetEmailByUsernameOrEmail(ctx context.Context, in *G
 	return out, nil
 }
 
-func (c *authServiceClient) GetAccountInfos(ctx context.Context, in *GetAccountsInfoRequest, opts ...grpc.CallOption) (*GetAccountsInfoResponse, error) {
+func (c *authServiceClient) GetAccountsInfo(ctx context.Context, in *GetAccountsInfoRequest, opts ...grpc.CallOption) (*GetAccountsInfoResponse, error) {
 	out := new(GetAccountsInfoResponse)
-	err := c.cc.Invoke(ctx, "/auth.AuthService/GetAccountInfos", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/auth.AuthService/GetAccountsInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (c *authServiceClient) GetAccountInfos(ctx context.Context, in *GetAccounts
 type AuthServiceServer interface {
 	ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error)
 	GetEmailByUsernameOrEmail(context.Context, *GetAccountEmailByUsernameOrEmailRequest) (*GetAccountByUsernameOrEmailResponse, error)
-	GetAccountInfos(context.Context, *GetAccountsInfoRequest) (*GetAccountsInfoResponse, error)
+	GetAccountsInfo(context.Context, *GetAccountsInfoRequest) (*GetAccountsInfoResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -82,8 +82,8 @@ func (UnimplementedAuthServiceServer) ValidateToken(context.Context, *ValidateTo
 func (UnimplementedAuthServiceServer) GetEmailByUsernameOrEmail(context.Context, *GetAccountEmailByUsernameOrEmailRequest) (*GetAccountByUsernameOrEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEmailByUsernameOrEmail not implemented")
 }
-func (UnimplementedAuthServiceServer) GetAccountInfos(context.Context, *GetAccountsInfoRequest) (*GetAccountsInfoResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAccountInfos not implemented")
+func (UnimplementedAuthServiceServer) GetAccountsInfo(context.Context, *GetAccountsInfoRequest) (*GetAccountsInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAccountsInfo not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -134,20 +134,20 @@ func _AuthService_GetEmailByUsernameOrEmail_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_GetAccountInfos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_GetAccountsInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAccountsInfoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).GetAccountInfos(ctx, in)
+		return srv.(AuthServiceServer).GetAccountsInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/auth.AuthService/GetAccountInfos",
+		FullMethod: "/auth.AuthService/GetAccountsInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GetAccountInfos(ctx, req.(*GetAccountsInfoRequest))
+		return srv.(AuthServiceServer).GetAccountsInfo(ctx, req.(*GetAccountsInfoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -168,8 +168,8 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_GetEmailByUsernameOrEmail_Handler,
 		},
 		{
-			MethodName: "GetAccountInfos",
-			Handler:    _AuthService_GetAccountInfos_Handler,
+			MethodName: "GetAccountsInfo",
+			Handler:    _AuthService_GetAccountsInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
